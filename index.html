@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Il Tuo Titolo</title>
+</head>
+
+<body>
+  <div class="overflow">
+    <div class="content-editor">
+      <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
+      <div class="wp-block-media-text__content">
+        <div id="app">
+          <h2>Stazioni</h2>
+
+          <!-- ... (altro codice HTML) ... -->
+
+          <div id="filter-container">
+
+            <label for="searchCliente">Ricerca per Cliente:</label>
+            <input type="text" id="searchCliente" oninput="applyFilters()" placeholder="Inserisci il cliente...">
+            <label for="searchStato">Ricerca per Stato:</label>
+            <input type="text" id="searchStato" oninput="applyFilters()" placeholder="Inserisci lo stato...">
+
+            <button class="button" onclick="applyFilters()">Applica Filtro e Ricarica Dati</button>
+            <button class="button" onclick="resetFilters()">Resetta Filtri</button>
+
+            <div id="row-count">Numero di righe: 0</div>
+            <div id="filter-info" onclick="clearFilter()"></div>
+
+          </div>
+
+          <table id="data-table">
+            <thead>
+              <tr>
+                <th>Indice</th>
+                <th>Cliente</th>
+                <th>Stato</th>
+                <th>Posti</th>
+                <th>Veicoli</th>
+              </tr>
+            </thead>
+            <tbody id="data-container"></tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Includi qui il tuo codice JavaScript
+    // ...
+  </script>
+</body>
+
+</html>
