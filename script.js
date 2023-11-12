@@ -22,9 +22,9 @@ function renderTable(data) {
       <td>${index + 1}</td>
       <td>${station.customer}</td>
       <td>${station.status}</td>
-      <td>${station.bays_table.map(bay => `${bay.bay}
+      <td>${station.bays_table.map(bay => `${bay.bay}</td>
       <td>${bay['bay-status']}`).join('<br>')}</td>
-      <td>${station.vehicle_table.map(vehicle => `${vehicle.vehicle}
+      <td>${station.vehicle_table.map(vehicle => `${vehicle.vehicle}</td>
       <td>${vehicle['bay-status']}`).join('<br>')}</td>
     `;
     container.appendChild(row);
