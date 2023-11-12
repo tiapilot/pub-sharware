@@ -22,8 +22,8 @@ function renderTable(data) {
       <td>${index + 1}</td>
       <td>${station.customer}</td>
       <td>${station.status}</td>
-      <td>${renderTableDetails(station.bays_table)}</td>
-      <td>${renderTableDetails(station.vehicle_table)}</td>
+      <td>${station.bays_table.map(bay => `${bay.bay} - ${bay['bay-status']}`).join('<br>')}</td>
+      <td>${station.vehicle_table.map(vehicle => `${vehicle.vehicle} - ${vehicle['bay-status']}`).join('<br>')}</td>
     `;
     container.appendChild(row);
 
@@ -33,10 +33,6 @@ function renderTable(data) {
   });
 
   updateFilterInfo();
-}
-
-function renderTableDetails(dataArray) {
-  return dataArray.map(item => `${item.bay || item.vehicle} - ${item['bay-status']}`).join('<br>');
 }
 
 
