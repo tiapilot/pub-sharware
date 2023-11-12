@@ -1,264 +1,58 @@
-<html><head>
-  <title>
-        ecospazio SharWare 2.0  </title>
-
- 
-  <meta name="description" content="Sistemi di bike-sharing e di ricarica per veicoli elettrici">
-
-  <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-  <meta name="csrf-param" content="authenticity_token">
-<meta name="csrf-token" content="4mrJ+ur2CZW+vwsbc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w/ZCeN+Ww2qnduAaw+LfwZkDriaDdp/ag==">
-  
-<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ecospazio</title>
+  <link rel="stylesheet" href="style.css">
 
 </head>
+
 <body>
+  <div class="overflow">
+    <div class="content-editor">
+      <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
+      <div class="wp-block-media-text__content">
+        <div id="app">
+          <h2>Stazioni</h2>
 
-<div id="header">
-  <table>
-  <tbody><tr>
-    <td class="col1"><a href="http://sharware.ecospazio.it"><img height="80" src="/assets/ecospazio-bef5bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w2c76f745210718ad14ac.png"></a></td>
+          <!-- ... (altro codice HTML) ... -->
 
-    <td class="col2">
+          <div id="filter-container">
 
-    </td>
+            <label for="searchCliente">Ricerca per Cliente:</label>
+            <input type="text" id="searchCliente" oninput="applyFilters()" placeholder="Inserisci il cliente...">
+            <label for="searchStato">Ricerca per Stato:</label>
+            <input type="text" id="searchStato" oninput="applyFilters()" placeholder="Inserisci lo stato...">
 
-    <td class="col3">
+            <button class="button" onclick="applyFilters()">Applica Filtro e Ricarica Dati</button>
+            <button class="button" onclick="resetFilters()">Resetta Filtri</button>
 
-        
+            <div id="row-count">Numero di righe: 0</div>
+            <div id="filter-info" onclick="clearFilter()"></div>
 
-    </td>
-  </tr>
-</tbody></table>
-</div>
+          </div>
 
-<div id="menu">
-  <ul class="menu">
-      <li><a href="/it/login">Accedi</a></li>
-</ul>
-  <div id="login">
-      <!--<a href="/it/login">Accedi</a>-->
-  <form id="locale" action="/it/map_stations" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="4mrJ+ur2CZW+vwsbc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w/ZCeN+Ww2qnduAaw+LfwZkDriaDdp/ag==">
-      <select name="set_locale" id="set_locale" onchange="this.form.submit()"><option value="en">English</option>
-<option selected="selected" value="it">Italiano</option>
-<option value="es">Español</option>
-<option value="de">Deutsch</option></select>
-</form></div>
-</div>
+          <table id="data-table">
+            <thead>
+              <tr>
+                <th>Indice</th>
+                <th>Cliente</th>
+                <th>Stato</th>
+                <th>Posti</th>
+                <th>Stato</th>
+                <th>Veicoli</th>
+              </tr>
+            </thead>
+            <tbody id="data-container"></tbody>
+          </table>
 
-<div id="page">
-
-  <div id="form_page">
-  <div id="form_title">Ciclostazione Cappella Maggiore
-    
-    <div style="font-style: italic; font-size: 16px; font-weight: normal">Piazza Earlston Loc. Anzano</div>
-    <div id="actions">
-      <table style="font-size: 10px"><tbody><tr></tr><tr></tr></tbody></table>
+        </div>
+      </div>
     </div>
   </div>
-  <div id="form_detail">
-    <table style="width: 100%">
-      <tbody><tr>
-        <td>
-          <div style="font-size: 18px; line-height: 24px">
-            Codice impianto: <b>2380.1</b><br>
-            Posti disponibili: <b>4</b><br>
-            Veicoli disponibili:
-            <b>0</b><br>
-            Veicoli prenotati:
-            <b>0</b>
-            <p></p>
-            
-          </div>
-        </td>
-        <td>
-          <div id="form_image">
-            <img height="200" src="/uploads/sharing_station/picture/175/CappellaMaggiore.jpg">
-            
-            
-          </div>
-        </td>
-      </tr>
-    </tbody></table>
-    <div style="font-size: 14px; line-height: 16px">Ciclo-stazione mista Cappella Maggiore
 
-UB. ECOSPAZIO</div>
-    <br>
-
-    <div id="form_title2">Mappa posti</div>
-        <div id="bays_table">
-          <table>
-            <tbody><tr>
-                  <th>
-                         <img height="24" alt="Posto ricarica bike privata" title="ricarica" src="/assets/private-6525b8fa298c7b880bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w871d654.png"> <img height="16" alt="Posto ricarica" title="ricarica" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1410">Posto 1</a>
-                  </th>
-                  <th>
-                         <img height="24" alt="Posto ricarica bike privata" title="ricarica" src="/assets/private-6525b8fa298c7b880bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w871d654.png"> <img height="16" alt="Posto ricarica" title="ricarica" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1411">Posto 2</a>
-                  </th>
-                  <th>
-                         <img height="24" alt="Posto ricarica bike privata" title="ricarica" src="/assets/private-6525b8fa298c7b880bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w871d654.png"> <img height="16" alt="Posto ricarica" title="ricarica" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1412">Posto 3</a>
-                  </th>
-                  <th>
-                         <img height="24" alt="Posto ricarica bike privata" title="ricarica" src="/assets/private-6525b8fa298c7b880bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w871d654.png"> <img height="16" alt="Posto ricarica" title="ricarica" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1413">Posto 4</a>
-                  </th>
-            </tr>
-            <tr>
-                          <td><br><br>-<br><br><br></td>
-                          <td><br><br>-<br><br><br></td>
-                          <td><br><br>-<br><br><br></td>
-                          <td><br><br>-<br><br><br></td>
-            </tr>
-          </tbody></table>
-          <table>
-            <tbody><tr>
-                  <th>
-                        <img height="24" alt="Posto bike pubblica" title="" src="/assets/sharing-7dc544bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wbc2fc88fe555257ced.png"> <img height="16" alt="Posto ricarica" title="" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1414">Posto 5</a>
-                  </th>
-                  <th>
-                        <img height="24" alt="Posto bike pubblica" title="" src="/assets/sharing-7dc544bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wbc2fc88fe555257ced.png"> <img height="16" alt="Posto ricarica" title="" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1415">Posto 6</a>
-                  </th>
-                  <th>
-                        <img height="24" alt="Posto bike pubblica" title="" src="/assets/sharing-7dc544bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wbc2fc88fe555257ced.png"> <img height="16" alt="Posto ricarica" title="" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1416">Posto 7</a>
-                  </th>
-                  <th>
-                        <img height="24" alt="Posto bike pubblica" title="" src="/assets/sharing-7dc544bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wbc2fc88fe555257ced.png"> <img height="16" alt="Posto ricarica" title="" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png"> <br>
-                        <a href="/it/bays/1417">Posto 8</a>
-                  </th>
-            </tr>
-            <tr>
-                      <td style="background-color: red">
-                        <a href="/it/vehicles/3117"><img height="48" src="/uploads/vehicle_type/picture/38/MTB-EXP.jpg"></a><img height="24" src="/assets/battery_charged-240c0ecebc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w77e8505cdc226a4a.png">
-                        <br>
-                        <a href="/it/vehicles/3117">MTB 02</a>
-                        (<a href="/it/vehicle_types/38">MTB-EXP</a>)
-                      </td>
-                      <td style="background-color: red">
-                        <a href="/it/vehicles/3115"><img height="48" src="/uploads/vehicle_type/picture/6/city_bike_elettrica__2_.png"></a><img height="24" src="/assets/battery_charged-240c0ecebc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w77e8505cdc226a4a.png">
-                        <br>
-                        <a href="/it/vehicles/3115">CITY 02</a>
-                        (<a href="/it/vehicle_types/6">Sunshine</a>)
-                      </td>
-                      <td style="background-color: red">
-                        <a href="/it/vehicles/3114"><img height="48" src="/uploads/vehicle_type/picture/6/city_bike_elettrica__2_.png"></a><img height="24" src="/assets/battery_charged-240c0ecebc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w77e8505cdc226a4a.png">
-                        <br>
-                        <a href="/it/vehicles/3114">CITY 01</a>
-                        (<a href="/it/vehicle_types/6">Sunshine</a>)
-                      </td>
-                      <td style="background-color: red">
-                        <a href="/it/vehicles/3116"><img height="48" src="/uploads/vehicle_type/picture/38/MTB-EXP.jpg"></a><img height="24" src="/assets/battery_charged-240c0ecebc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w77e8505cdc226a4a.png">
-                        <br>
-                        <a href="/it/vehicles/3116">MTB 01</a>
-                        (<a href="/it/vehicle_types/38">MTB-EXP</a>)
-                      </td>
-            </tr>
-          </tbody></table>
-          <table>
-            <tbody><tr>
-                  <th>
-                         <img height="24" alt="Posto ricarica veicolo elettrico" title="" src="/assets/recharge_bay-de742bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w85aa255b44f3d48b4e3.png"> <br>
-                        <a href="/it/bays/1418">Posto 9</a>
-                  </th>
-            </tr>
-            <tr>
-                          <td style="background-color: red;"><img height="24" src="/assets/warning_black-c8fd2de8bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wf74e2c35a4f1aebe.png"></td>
-            </tr>
-          </tbody></table>
-    </div>
-
-<br>
-
-<table id="form_table">
-  <tbody><tr>
-    <td style="border: none; background-color: transparent; text-align: left">Legenda stati:</td>
-    <td style="background-color: white;">
-      Non elettrica
-      <br>
-    </td>
-    <td style="background-color: yellow;">
-      In carica
-      <br>
-      <img height="24" src="/assets/battery_charging-778e72cbc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w6fcb9e1edbb18b423.png">
-    </td>
-    <td style="background-color: lightgreen;">
-      Carica
-      <br>
-      <img height="24" src="/assets/battery_charged-240c0ecebc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w77e8505cdc226a4a.png">
-    </td>
-    <td style="background-color: red;">
-      Fuori servizio
-      <br>
-      <img height="24" src="/assets/warning_black-c8fd2de8bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wf74e2c35a4f1aebe.png">
-    </td>
-    <td style="background-color: #00ffff;">Prenotato
-      <br>
-      <img height="24" src="/assets/pencil-c06a78bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w2db872173ad7a72291.png">
-    </td>
-  </tr>
-</tbody></table>
-<table id="form_table">
-  <tbody><tr>
-    <td style="border: none; background-color: transparent;; text-align: left">Legenda tipi:</td>
-    <td>
-      Posto bike pubblica normale
-      <br>
-      <img height="24" src="/assets/sharing-7dc544bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wbc2fc88fe555257ced.png">
-    </td>
-    <td>
-      Posto bike pubblica elettrica
-      <br>
-      <img height="24" src="/assets/sharing-7dc544bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wbc2fc88fe555257ced.png"> <img height="16" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png">
-    </td>
-    <td>
-      Posto ricarica bike privata
-      <br>
-      <img height="24" src="/assets/private-6525b8fa298c7b880bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w871d654.png"> <img height="16" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png">
-    </td>
-    <td>
-      Posto ricarica bike pubblica o privata
-      <br>
-      <img height="24" src="/assets/sharing-7dc544bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4wbc2fc88fe555257ced.png"> <img height="24" src="/assets/private-6525b8fa298c7b880bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w871d654.png"> <img height="16" src="/assets/battery-bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w11755dcd9668a7b6c100c5f5.png">
-    </td>
-    <td>
-      Posto ricarica veicolo elettrico
-      <br>
-      <img height="24" src="/assets/recharge_bay-de742bc1qk55vk7wjgzg3pmxlh59rv5dlgewd9jem5nrt4w85aa255b44f3d48b4e3.png">
-    </td>
-  </tr>
-</tbody></table>
-
-
-
-    <br>
-    <br>
-    
-  </div>
-</div>
-  
-
-  <div id="progress">
-    Elaborazione in corso...
-  </div>
-</div>
-
-<div id="footer">
-  <a href="http://www.ecospazio.it">www.ecospazio.it</a>
-  <small>
-    
-    Copyright 2019 Logiss Srl - Divisione Smart Mobility <br>
-    V.le del Lavoro, 16/E - 38068 Rovereto TN Italy - Tel: 0464 401121 - E-Mail: <a href="mailto:info@ecospazio.it">info@ecospazio.it</a>
-  </small>
- </div>
   <script src="script.js"></script>
 </body>
 
 </html>
-
-
-</body></html>
