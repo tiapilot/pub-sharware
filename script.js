@@ -38,9 +38,11 @@ function renderTable() {
 }
 
 function renderTableHeaders() {
+  const theader = document.getElementById('data-header');
+  theader.innerHTML = '';
   const headerRow = document.createElement('tr');
-  headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th><th>Stato2</th><th>Stato3</th>';
-  document.getElementById('data-container').appendChild(headerRow);
+  headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th><th>Posti</th><th>Stato Posti</th><th>Veicoli</th><th>Tipo Veicoli</th>';
+  theader.appendChild(headerRow);
 }
 
 function applyFilters() {
