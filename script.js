@@ -96,4 +96,11 @@ function setInputValue(inputId, value) {
   document.getElementById(inputId).value = value;
 }
 
+function countOccurences() {
+  const statusToCount = "FUORI SERVIZIO";
+  const count = filteredData ? filteredData.reduce((acc, station) => acc + (station.status === statusToCount), 0) : 0;
+  alert(`Il numero di occorrenze di "${statusToCount}" è: ${count}`);
+}
+
+
 window.onload = loadData;
