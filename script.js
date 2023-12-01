@@ -98,9 +98,13 @@ function setInputValue(inputId, value) {
 
 function countOccurences() {
   const statusToCount = "Fuori Servizio";
-  const count = stationData ? stationData.reduce((acc, station) => acc + (station.status.trim().toLowerCase() === statusToCount.toLowerCase()), 0) : 0;
+  const count = stationData ? stationData.reduce((acc, station) => {
+    console.log(`Current status: ${station.status}`);
+    return acc + (station.status.trim().toLowerCase() === statusToCount.toLowerCase());
+  }, 0) : 0;
   alert(`Il numero di occorrenze di "${statusToCount}" è: ${count}`);
 }
+
 
 
 window.onload = loadData;
