@@ -1,10 +1,6 @@
 let stationData = [];
 let filteredData = null;
 
-function getInputValue(inputId) {
-  return document.getElementById(inputId).value.trim();
-}
-
 function fetchData() {
   return fetch('https://raw.githubusercontent.com/tiapilot/pub-sharware/main/data.json')
     .then(response => {
@@ -29,9 +25,7 @@ function renderTable() {
   const container = document.getElementById('data-container');
   container.innerHTML = '';
 
-  renderTableHeaders();
-
-  (filteredData || stationData).forEach((station, index) => {
+  stationData.forEach((station, index) => {
     const row = document.createElement('tr');
     row.innerHTML = `<td>${index + 1}</td><td>${station.customer}</td><td>${station.status}</td>`;
     container.appendChild(row);
@@ -39,11 +33,6 @@ function renderTable() {
 
   updateFilterInfo();
   updateRowCount();
-}
-
-function renderTableHeaders() {
-  const headerRow = document.getElementById('data-header');
-  headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th><th>Posti</th><th>Stato Posti</th><th>Veicoli</th><th>Tipo Veicoli</th>';
 }
 
 function applyFilters() {
@@ -76,7 +65,9 @@ function updateRowCount() {
 }
 
 function clearFilter() {
-  resetFilters();
+  setInputValue('searchCliente', '');
+  setInputValue('searchStato', '');
+  filteredData = null;
   renderTable();
 }
 
@@ -84,6 +75,7 @@ function resetFilters() {
   setInputValue('searchCliente', '');
   setInputValue('searchStato', '');
   filteredData = null;
+  renderTable();
 }
 
 function setInputValue(inputId, value) {
