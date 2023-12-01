@@ -1,4 +1,4 @@
-let stationData = [];
+let stationData;
 let filteredData = null;
 
 function fetchData() {
@@ -11,36 +11,39 @@ function fetchData() {
     });
 }
 
-function loadData() {
-  fetchData()
-    .then(data => {
-      stationData = data;
-      renderTable();
-      applyFilters();
-    })
-    .catch(error => console.error(error));
-}
-
-function renderTable() {
+function renderTable(data) {
+  stationData = data;
   const container = document.getElementById('data-container');
   container.innerHTML = '';
 
-  renderTableHeaders();
-
-  (filteredData || stationData).forEach((station, index) => {
+  stationData.forEach((station, index) => {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${index + 1}</td><td>${station.customer}</td><td>${station.status}</td>`;
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${station.customer}</td>
+      <td>${station.status}</td>
+      <td>${station.bays_table.map(bay => `${bay.bay} - ${bay['bay-status']}`).join('<br>')}</td>
+      <td>${station.vehicle_table.map(vehicle => `${vehicle.vehicle} - ${vehicle['bay-status']}`).join('<br>')}</td>
+    `;
     container.appendChild(row);
+
+    if (index % 2 === 1) {
+      row.classList.add('even-row');
+    }
   });
 
   updateFilterInfo();
-  updateRowCount();
 }
 
-function renderTableHeaders() {
-  const headerRow = document.createElement('tr');
-  headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th>';
-  document.getElementById('data-container').appendChild(headerRow);
+
+
+function loadData() {
+  fetchData()
+    .then(data => {
+      renderTable(data);
+      applyFilters();
+    })
+    .catch(error => console.error(error));
 }
 
 function applyFilters() {
@@ -52,7 +55,12 @@ function applyFilters() {
     station.status.toLowerCase().includes(searchStato.toLowerCase())
   );
 
-  renderTable();
+  renderTable(searchCliente || searchStato ? filteredData : stationData);
+  updateFilterInfo();
+}
+
+function getInputValue(inputId) {
+  return document.getElementById(inputId).value.trim();
 }
 
 function updateFilterInfo() {
@@ -67,33 +75,32 @@ function updateFilterInfo() {
   document.getElementById('filter-info').innerHTML = `${filterInfo}${statoInfo}${filterButton}`;
 }
 
-function updateRowCount() {
-  const rowCount = filteredData ? filteredData.length : stationData.length;
-  document.getElementById('row-count').textContent = `Numero di righe: ${rowCount}`;
-}
-
 function clearFilter() {
   setInputValue('searchCliente', '');
   setInputValue('searchStato', '');
+
   filteredData = null;
-  renderTable();
+  loadData();
+  renderTable(stationData);
+  updateFilterInfo();
 }
 
 function resetFilters() {
   setInputValue('searchCliente', '');
   setInputValue('searchStato', '');
   filteredData = null;
-  renderTable();
+  loadData();
 }
 
 function setInputValue(inputId, value) {
   document.getElementById(inputId).value = value;
 }
 
-function countOccurrences() {
-  const statusToCount = "Fuori Servizio";
-  const count = filteredData ? filteredData.filter(station => station.status.trim().toLowerCase() === statusToCount.toLowerCase()).length : 0;
+function countOccurences() {
+  const statusToCount = "FUORI SERVIZIO";
+  const count = filteredData ? filteredData.reduce((acc, station) => acc + (station.status === statusToCount), 0) : 0;
   alert(`Il numero di occorrenze di "${statusToCount}" è: ${count}`);
 }
+
 
 window.onload = loadData;
