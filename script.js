@@ -25,7 +25,9 @@ function renderTable() {
   const container = document.getElementById('data-container');
   container.innerHTML = '';
 
-  stationData.forEach((station, index) => {
+  renderTableHeaders();
+
+  (filteredData || stationData).forEach((station, index) => {
     const row = document.createElement('tr');
     row.innerHTML = `<td>${index + 1}</td><td>${station.customer}</td><td>${station.status}</td>`;
     container.appendChild(row);
@@ -33,6 +35,12 @@ function renderTable() {
 
   updateFilterInfo();
   updateRowCount();
+}
+
+function renderTableHeaders() {
+  const headerRow = document.createElement('tr');
+  headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th>';
+  document.getElementById('data-container').appendChild(headerRow);
 }
 
 function applyFilters() {
