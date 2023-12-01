@@ -38,11 +38,8 @@ function renderTable() {
 }
 
 function renderTableHeaders() {
-  const theader = document.getElementById('data-header');
-  theader.innerHTML = '';
-  const headerRow = document.createElement('tr');
+  const headerRow = document.getElementById('data-header');
   headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th><th>Posti</th><th>Stato Posti</th><th>Veicoli</th><th>Tipo Veicoli</th>';
-  theader.appendChild(headerRow);
 }
 
 function applyFilters() {
@@ -75,9 +72,7 @@ function updateRowCount() {
 }
 
 function clearFilter() {
-  setInputValue('searchCliente', '');
-  setInputValue('searchStato', '');
-  filteredData = null;
+  resetFilters();
   renderTable();
 }
 
@@ -85,7 +80,6 @@ function resetFilters() {
   setInputValue('searchCliente', '');
   setInputValue('searchStato', '');
   filteredData = null;
-  renderTable();
 }
 
 function setInputValue(inputId, value) {
