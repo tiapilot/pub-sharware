@@ -39,7 +39,7 @@ function renderTable() {
 
 function renderTableHeaders() {
   const headerRow = document.createElement('tr');
-  headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th>';
+  headerRow.innerHTML = '<th>Indice</th><th>Cliente</th><th>Stato</th><th>Stato2</th><th>Stato3</th>';
   document.getElementById('data-container').appendChild(headerRow);
 }
 
