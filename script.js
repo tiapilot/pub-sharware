@@ -33,6 +33,7 @@ function renderTable(data) {
   });
 
   updateFilterInfo();
+  updateRowCount(); // Aggiungi questa chiamata per aggiornare il conteggio delle righe
 }
 
 
@@ -57,6 +58,7 @@ function applyFilters() {
 
   renderTable(searchCliente || searchStato ? filteredData : stationData);
   updateFilterInfo();
+  updateRowCount(); // Aggiungi questa chiamata per aggiornare il conteggio delle righe filtrate
 }
 
 function getInputValue(inputId) {
@@ -83,6 +85,11 @@ function clearFilter() {
   loadData();
   renderTable(stationData);
   updateFilterInfo();
+}
+
+function updateRowCount() {
+  const rowCount = stationData ? stationData.length : 0;
+  document.getElementById('row-count').textContent = `Numero di righe: ${rowCount}`;
 }
 
 function resetFilters() {
