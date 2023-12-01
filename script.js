@@ -1,6 +1,10 @@
 let stationData = [];
 let filteredData = null;
 
+function getInputValue(inputId) {
+  return document.getElementById(inputId).value.trim();
+}
+
 function fetchData() {
   return fetch('https://raw.githubusercontent.com/tiapilot/pub-sharware/main/data.json')
     .then(response => {
