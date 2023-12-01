@@ -13,6 +13,8 @@ function fetchData() {
 
 function renderTable(data) {
   stationData = data;
+  console.log('Rendering table with data:', data);
+
   const container = document.getElementById('data-container');
   container.innerHTML = '';
 
@@ -89,6 +91,7 @@ function clearFilter() {
 
 function updateRowCount() {
   const rowCount = stationData ? stationData.length : 0;
+  console.log('Updating row count:', rowCount);
   document.getElementById('row-count').textContent = `Numero di righe: ${rowCount}`;
 }
 
