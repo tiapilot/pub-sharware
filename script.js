@@ -1,4 +1,4 @@
-let stationData;
+let stationData = [];
 let filteredData = null;
 
 function fetchData() {
@@ -11,39 +11,28 @@ function fetchData() {
     });
 }
 
-function renderTable(data) {
-  stationData = data;
+function loadData() {
+  fetchData()
+    .then(data => {
+      stationData = data;
+      renderTable();
+      applyFilters();
+    })
+    .catch(error => console.error(error));
+}
+
+function renderTable() {
   const container = document.getElementById('data-container');
   container.innerHTML = '';
 
   stationData.forEach((station, index) => {
     const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${station.customer}</td>
-      <td>${station.status}</td>
-      <td>${station.bays_table.map(bay => `${bay.bay} - ${bay['bay-status']}`).join('<br>')}</td>
-      <td>${station.vehicle_table.map(vehicle => `${vehicle.vehicle} - ${vehicle['bay-status']}`).join('<br>')}</td>
-    `;
+    row.innerHTML = `<td>${index + 1}</td><td>${station.customer}</td><td>${station.status}</td>`;
     container.appendChild(row);
-
-    if (index % 2 === 1) {
-      row.classList.add('even-row');
-    }
   });
 
   updateFilterInfo();
-}
-
-
-
-function loadData() {
-  fetchData()
-    .then(data => {
-      renderTable(data);
-      applyFilters();
-    })
-    .catch(error => console.error(error));
+  updateRowCount();
 }
 
 function applyFilters() {
@@ -55,12 +44,7 @@ function applyFilters() {
     station.status.toLowerCase().includes(searchStato.toLowerCase())
   );
 
-  renderTable(searchCliente || searchStato ? filteredData : stationData);
-  updateFilterInfo();
-}
-
-function getInputValue(inputId) {
-  return document.getElementById(inputId).value.trim();
+  renderTable();
 }
 
 function updateFilterInfo() {
@@ -75,32 +59,33 @@ function updateFilterInfo() {
   document.getElementById('filter-info').innerHTML = `${filterInfo}${statoInfo}${filterButton}`;
 }
 
+function updateRowCount() {
+  const rowCount = filteredData ? filteredData.length : stationData.length;
+  document.getElementById('row-count').textContent = `Numero di righe: ${rowCount}`;
+}
+
 function clearFilter() {
   setInputValue('searchCliente', '');
   setInputValue('searchStato', '');
-
   filteredData = null;
-  loadData();
-  renderTable(stationData);
-  updateFilterInfo();
+  renderTable();
 }
 
 function resetFilters() {
   setInputValue('searchCliente', '');
   setInputValue('searchStato', '');
   filteredData = null;
-  loadData();
+  renderTable();
 }
 
 function setInputValue(inputId, value) {
   document.getElementById(inputId).value = value;
 }
 
-function countOccurences() {
-  const statusToCount = "FUORI SERVIZIO";
-  const count = filteredData ? filteredData.reduce((acc, station) => acc + (station.status === statusToCount), 0) : 0;
+function countOccurrences() {
+  const statusToCount = "Fuori Servizio";
+  const count = filteredData ? filteredData.filter(station => station.status.trim().toLowerCase() === statusToCount.toLowerCase()).length : 0;
   alert(`Il numero di occorrenze di "${statusToCount}" è: ${count}`);
 }
-
 
 window.onload = loadData;
